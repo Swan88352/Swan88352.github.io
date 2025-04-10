@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-  <title>Tamagotchi Mini App</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тамагочи</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: Arial, sans-serif;
       text-align: center;
-      margin-top: 20px;
       background-color: #f0f8ff;
+      padding: 20px;
     }
     h1 {
       color: #333;
@@ -33,12 +34,16 @@
     #pet {
       width: 150px;
       margin-top: 30px;
+      transition: all 0.5s;
     }
     #pet.sad {
       filter: grayscale(100%);
     }
     #pet.happy {
       filter: none;
+    }
+    #pet.tired {
+      filter: sepia(100%);
     }
   </style>
 </head>
@@ -63,29 +68,46 @@
 
     function updatePet() {
       let pet = document.getElementById('pet');
-      if (happiness < 30) {
+      
+      // Грустный питомец (если низкое счастье или высокий голод)
+      if (happiness < 30 || hunger > 70) {
         pet.classList.add('sad');
         pet.classList.remove('happy');
-      } else {
+        pet.classList.remove('tired');
+      }
+      // Счастливый питомец
+      else if (happiness > 70 && energy > 30) {
         pet.classList.add('happy');
         pet.classList.remove('sad');
+        pet.classList.remove('tired');
+      }
+      // Уставший питомец
+      else if (energy < 30) {
+        pet.classList.add('tired');
+        pet.classList.remove('sad');
+        pet.classList.remove('happy');
+      }
+      else {
+        pet.classList.remove('sad', 'happy', 'tired');
       }
     }
 
     function feed() {
       hunger = Math.max(0, hunger - 10);
+      energy = Math.max(0, energy - 5);  // Немного тратим энергии на кормление
       updateStatus();
     }
 
     function play() {
       happiness = Math.min(100, happiness + 10);
-      energy = Math.max(0, energy - 5);
+      energy = Math.max(0, energy - 15);  // Игры отнимают много энергии
+      hunger += 5;  // Игра повышает голод
       updateStatus();
     }
 
     function sleep() {
-      energy = Math.min(100, energy + 15);
-      hunger += 5;
+      energy = Math.min(100, energy + 20);  // Спим, восстанавливаем энергию
+      hunger += 10;  // После сна питомец может быть немного голодным
       updateStatus();
     }
 
