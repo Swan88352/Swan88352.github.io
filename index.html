@@ -36,7 +36,7 @@
       margin-top: 20px;
     }
     #petImage {
-      width: 150px;
+      width: 200px;
       margin-top: 20px;
     }
     .sad {
@@ -58,7 +58,7 @@
   <p id="status"></p>
 
   <!-- Питомец -->
-  <img id="petImage" src="https://i.imgur.com/JKphmOs.png" class="happy" alt="Tamagotchi">
+  <img id="petImage" src="https://i.imgur.com/FZXYTDC.png" class="happy" alt="Tamagotchi">
 
   <!-- Кнопки для взаимодействия -->
   <button onclick="feed()">Кормить</button>
@@ -84,19 +84,23 @@
       
       // Грустный питомец, если счастье низкое или голод высокий
       if (happiness < 30 || hunger > 70) {
+        petImage.src = 'https://i.imgur.com/FZXYTDC.png';  // Грустное изображение
         petImage.className = 'sad';
         document.getElementById('status').innerText = "Питомец грустный!";
       }
       // Счастливый питомец, если счастье и энергия высокие
       else if (happiness > 70 && energy > 30) {
+        petImage.src = 'https://i.imgur.com/6hfL1bD.png';  // Счастливое изображение
         petImage.className = 'happy';
         document.getElementById('status').innerText = "Питомец счастлив!";
       }
       // Уставший питомец, если энергия низкая
       else if (energy < 30) {
+        petImage.src = 'https://i.imgur.com/TohbmnD.png';  // Уставшее изображение
         petImage.className = 'tired';
         document.getElementById('status').innerText = "Питомец устал!";
       } else {
+        petImage.src = 'https://i.imgur.com/6hfL1bD.png';  // Счастливое изображение
         petImage.className = 'happy';
         document.getElementById('status').innerText = "Питомец в норме!";
       }
