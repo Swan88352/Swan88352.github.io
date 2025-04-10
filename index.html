@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tamagotchi Mini App</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+    button { margin: 10px; padding: 10px 20px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h1>Твой Тамагочи</h1>
+  <p id="status">Голод: 50 | Счастье: 50 | Энергия: 50</p>
+
+  <button onclick="feed()">Кормить</button>
+  <button onclick="play()">Играть</button>
+  <button onclick="sleep()">Спать</button>
+
+  <script>
+    let hunger = 50, happiness = 50, energy = 50;
+
+    function updateStatus() {
+      document.getElementById('status').innerText =
+        Голод: ${hunger} | Счастье: ${happiness} | Энергия: ${energy};
+    }
+
+    function feed() {
+      hunger = Math.max(0, hunger - 10);
+      updateStatus();
+    }
+
+    function play() {
+      happiness = Math.min(100, happiness + 10);
+      energy = Math.max(0, energy - 5);
+      updateStatus();
+    }
+
+    function sleep() {
+      energy = Math.min(100, energy + 15);
+      hunger += 5;
+      updateStatus();
+    }
+
+    updateStatus();
+  </script>
+</body>
+</html>
