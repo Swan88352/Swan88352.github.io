@@ -31,86 +31,100 @@
     button:hover {
       background-color: #45a049;
     }
-    #pet {
-      width: 150px;
-      margin-top: 30px;
-      transition: all 0.5s;
+    #petStatus {
+      font-size: 22px;
+      margin-top: 20px;
     }
-    #pet.sad {
+    #petImage {
+      width: 150px;
+      margin-top: 20px;
+    }
+    .sad {
       filter: grayscale(100%);
     }
-    #pet.happy {
+    .happy {
       filter: none;
     }
-    #pet.tired {
+    .tired {
       filter: sepia(100%);
     }
   </style>
 </head>
 <body>
   <h1>Твой Тамагочи</h1>
-  <img id="pet" src="https://www.kindpng.com/picc/m/2-29137_tamagotchi-clipart-pet-clip-art-tamagotchi-png-transparent.png" alt="Tamagotchi" class="happy">
+  <div id="petStatus">Голод: 50 | Счастье: 50 | Энергия: 50</div>
+  
+  <!-- Статус питомца -->
+  <p id="status"></p>
 
-  <p id="status">Голод: 50 | Счастье: 50 | Энергия: 50</p>
+  <!-- Питомец -->
+  <img id="petImage" src="https://i.imgur.com/JKphmOs.png" class="happy" alt="Tamagotchi">
 
+  <!-- Кнопки для взаимодействия -->
   <button onclick="feed()">Кормить</button>
   <button onclick="play()">Играть</button>
   <button onclick="sleep()">Спать</button>
 
   <script>
+    // Начальные параметры питомца
     let hunger = 50, happiness = 50, energy = 50;
 
+    // Обновление статуса питомца
     function updateStatus() {
-      document.getElementById('status').innerText =
-        Голод: ${hunger} | Счастье: ${happiness} | Энергия: ${energy};
+      let petStatusText = Голод: ${hunger} | Счастье: ${happiness} | Энергия: ${energy};
+      document.getElementById('petStatus').innerText = petStatusText;
+
+      // Обновление состояния питомца в зависимости от показателей
       updatePet();
     }
 
+    // Обновление изображения питомца
     function updatePet() {
-      let pet = document.getElementById('pet');
+      let petImage = document.getElementById('petImage');
       
-      // Грустный питомец (если низкое счастье или высокий голод)
+      // Грустный питомец, если счастье низкое или голод высокий
       if (happiness < 30 || hunger > 70) {
-        pet.classList.add('sad');
-        pet.classList.remove('happy');
-        pet.classList.remove('tired');
+        petImage.className = 'sad';
+        document.getElementById('status').innerText = "Питомец грустный!";
       }
-      // Счастливый питомец
+      // Счастливый питомец, если счастье и энергия высокие
       else if (happiness > 70 && energy > 30) {
-        pet.classList.add('happy');
-        pet.classList.remove('sad');
-        pet.classList.remove('tired');
+        petImage.className = 'happy';
+        document.getElementById('status').innerText = "Питомец счастлив!";
       }
-      // Уставший питомец
+      // Уставший питомец, если энергия низкая
       else if (energy < 30) {
-        pet.classList.add('tired');
-        pet.classList.remove('sad');
-        pet.classList.remove('happy');
-      }
-      else {
-        pet.classList.remove('sad', 'happy', 'tired');
+        petImage.className = 'tired';
+        document.getElementById('status').innerText = "Питомец устал!";
+      } else {
+        petImage.className = 'happy';
+        document.getElementById('status').innerText = "Питомец в норме!";
       }
     }
 
+    // Функция для кормления питомца
     function feed() {
-      hunger = Math.max(0, hunger - 10);
+      hunger = Math.max(0, hunger - 15);
       energy = Math.max(0, energy - 5);  // Немного тратим энергии на кормление
       updateStatus();
     }
 
+    // Функция для игры с питомцем
     function play() {
-      happiness = Math.min(100, happiness + 10);
-      energy = Math.max(0, energy - 15);  // Игры отнимают много энергии
-      hunger += 5;  // Игра повышает голод
+      happiness = Math.min(100, happiness + 20);
+      energy = Math.max(0, energy - 20);  // Игры требуют много энергии
+      hunger = Math.min(100, hunger + 10);  // Игра повышает голод
       updateStatus();
     }
 
+    // Функция для сна питомца
     function sleep() {
-      energy = Math.min(100, energy + 20);  // Спим, восстанавливаем энергию
-      hunger += 10;  // После сна питомец может быть немного голодным
+      energy = Math.min(100, energy + 30);  // Спим и восстанавливаем энергию
+      hunger = Math.min(100, hunger + 10);  // После сна питомец немного голоден
       updateStatus();
     }
 
+    // Инициализация статуса при загрузке
     updateStatus();
   </script>
 </body>
